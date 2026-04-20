@@ -1,12 +1,13 @@
-/* --- Materials & Palette: The Liquid Amber Mindscape --- */
+/* --- Materials & Palette: The Chronal Amber Void --- */
 :root {
-  --void-core: #050300;
-  --void-edge: #1a1100;
+  --void-core: #030200;
+  --void-edge: #140d00;
   --amber-bright: #ffbf00;
   --amber-dim: #cc9900;
   --amber-dark: #664d00;
-  --amber-liquid: rgba(255, 191, 0, 0.15);
+  --amber-liquid: rgba(255, 191, 0, 0.1);
   --amber-meniscus: rgba(255, 191, 0, 0.4);
+  --time-ghost: rgba(255, 235, 180, 0.5); /* The color of temporal echoes */
   --thought-text: #fdf5e6;
   --synapse-red: #ff4d4d;
   
@@ -15,9 +16,15 @@
   --tray-width: 360px;
 }
 
+/* 1. THE FLOW OF TIME BACKGROUND */
 body {
   margin: 0;
-  background: radial-gradient(circle at center, var(--void-edge) 0%, var(--void-core) 100%);
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 191, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(204, 153, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at center, var(--void-edge) 0%, var(--void-core) 100%);
+  background-size: 150% 150%;
+  animation: time-flow 25s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate;
   color: var(--thought-text);
   font-family: var(--font-echo);
   font-size: 18px;
@@ -28,12 +35,47 @@ body {
   justify-content: center;
 }
 
-/* --- Ethereal Atmosphere (The deep water) --- */
+/* --- THE NEW WAVE & TIME ANIMATIONS --- */
+@keyframes time-flow {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes puddle-morph {
+  0% { border-radius: 35px 55px 45px 65px / 45px 35px 65px 55px; }
+  34% { border-radius: 55px 35px 65px 45px / 35px 55px 45px 65px; }
+  67% { border-radius: 45px 65px 35px 55px / 65px 45px 55px 35px; }
+  100% { border-radius: 35px 55px 45px 65px / 45px 35px 65px 55px; }
+}
+
+@keyframes liquid-pulse {
+  0% { box-shadow: inset 0 0 25px var(--amber-meniscus), 0 0 20px var(--amber-liquid); }
+  100% { box-shadow: inset 0 0 50px var(--amber-meniscus), 0 0 50px rgba(255, 191, 0, 0.25); }
+}
+
+@keyframes float-container {
+  0%   { transform: translate(0px, 0px) rotate(0deg); }
+  33%  { transform: translate(4px, -6px) rotate(0.5deg); }
+  66%  { transform: translate(-4px, 4px) rotate(-0.5deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+/* 2. CHRONAL ECHO TEXT EFFECT */
+@keyframes chronal-shift {
+  0%, 100% { text-shadow: 2px 0 8px var(--amber-bright), -2px 0 8px var(--amber-dark); }
+  50% { text-shadow: -4px 0 15px var(--amber-dim), 4px 0 15px var(--time-ghost); }
+}
+
+.chronal-text {
+  animation: chronal-shift 6s ease-in-out infinite;
+}
+
+/* --- Ethereal Atmosphere --- */
 #grime-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle, transparent 10%, rgba(5, 3, 0, 0.85) 100%);
-  box-shadow: inset 0 0 100px rgba(255, 191, 0, 0.05);
+  background: radial-gradient(circle, transparent 15%, rgba(2, 1, 0, 0.9) 100%);
+  box-shadow: inset 0 0 150px rgba(255, 191, 0, 0.05);
   pointer-events: none;
   z-index: 50;
 }
@@ -44,53 +86,25 @@ body {
   width: 96vw;
   max-width: 1500px;
   height: 88vh;
-  gap: 30px;
+  gap: 35px;
   z-index: 10;
   position: relative;
 }
 
-/* --- THE WAVY & FLOATING ANIMATIONS --- */
-@keyframes puddle-morph {
-  0% { border-radius: 30px 50px 40px 60px / 40px 30px 60px 50px; }
-  34% { border-radius: 50px 30px 60px 40px / 30px 50px 40px 60px; }
-  67% { border-radius: 40px 60px 30px 50px / 60px 40px 50px 30px; }
-  100% { border-radius: 30px 50px 40px 60px / 40px 30px 60px 50px; }
-}
-
-@keyframes liquid-pulse {
-  0% { box-shadow: inset 0 0 20px var(--amber-meniscus), 0 0 20px var(--amber-liquid); }
-  100% { box-shadow: inset 0 0 40px var(--amber-meniscus), 0 0 40px rgba(255, 191, 0, 0.3); }
-}
-
-@keyframes bubble-rise {
-  0% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-4px) scale(1.05); }
-  100% { transform: translateY(0) scale(1); }
-}
-
-/* NEW: The floating drift effect */
-@keyframes float-container {
-  0%   { transform: translate(0px, 0px); }
-  33%  { transform: translate(5px, -8px); }
-  66%  { transform: translate(-5px, 5px); }
-  100% { transform: translate(0px, 0px); }
-}
-
-/* --- The Main Mind-Space Window (The Big Puddle) --- */
+/* --- The Main Mind-Space Window --- */
 #terminal-wrapper {
   flex: 2.5;
-  background: linear-gradient(135deg, rgba(30, 20, 0, 0.6) 0%, rgba(10, 7, 0, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(40, 25, 0, 0.5) 0%, rgba(10, 5, 0, 0.7) 100%);
   border: 2px solid var(--amber-meniscus);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   padding: 30px;
   position: relative;
   
-  /* ADDED: float-container to make the whole box drift */
-  animation: puddle-morph 12s ease-in-out infinite, 
-             liquid-pulse 4s ease-in-out infinite alternate,
-             float-container 14s ease-in-out infinite;
+  animation: puddle-morph 14s ease-in-out infinite, 
+             liquid-pulse 6s ease-in-out infinite alternate,
+             float-container 16s ease-in-out infinite;
 }
 
 /* Ethereal Header */
@@ -98,53 +112,52 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  border-bottom: 2px solid rgba(255, 191, 0, 0.2);
+  border-bottom: 2px solid rgba(255, 191, 0, 0.15);
   padding-bottom: 15px;
   margin-bottom: 25px;
-  background: transparent;
 }
 
-.brand h2 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 3rem; letter-spacing: 4px; line-height: 1; text-transform: uppercase; text-shadow: 0 0 15px var(--amber-bright), 0 0 30px var(--amber-dark); }
-.brand small { font-size: 0.9rem; color: var(--amber-dim); letter-spacing: 3px; font-family: var(--font-echo); opacity: 0.8; }
+.brand h2 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 3rem; letter-spacing: 5px; line-height: 1; text-transform: uppercase; }
+.brand small { font-size: 0.95rem; color: var(--amber-dim); letter-spacing: 4px; font-family: var(--font-echo); opacity: 0.8; }
 
 #system-clock {
   color: var(--amber-bright);
   font-family: var(--font-echo);
   font-size: 1.2rem;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   text-shadow: 0 0 10px var(--amber-bright);
 }
 
-/* Glowing Construct Button (Looks like a compressed bubble) */
+/* Glowing Construct Button */
 #tools-toggle {
-  background: rgba(255, 191, 0, 0.1);
+  background: rgba(255, 191, 0, 0.05);
   color: var(--amber-bright);
   border: 1px solid var(--amber-dim);
-  border-radius: 30px 10px 30px 10px / 10px 30px 10px 30px;
+  border-radius: 40px 15px 40px 15px / 15px 40px 15px 40px;
   font-family: var(--font-mind);
   font-weight: bold;
   cursor: pointer;
-  padding: 12px 24px;
+  padding: 12px 26px;
   font-size: 1.1rem;
-  text-transform: uppercase;
-  box-shadow: inset 0 0 10px var(--amber-meniscus);
-  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  box-shadow: inset 0 0 15px rgba(255,191,0,0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #tools-toggle:hover {
-  background: rgba(255, 191, 0, 0.2);
-  border-radius: 10px 30px 10px 30px / 30px 10px 30px 10px;
-  box-shadow: inset 0 0 20px var(--amber-bright), 0 0 15px var(--amber-liquid);
-  text-shadow: 0 0 8px var(--amber-bright);
+  background: rgba(255, 191, 0, 0.15);
+  border-radius: 15px 40px 15px 40px / 40px 15px 40px 15px;
+  box-shadow: inset 0 0 25px var(--amber-bright), 0 0 20px var(--amber-liquid);
+  text-shadow: 0 0 10px var(--time-ghost);
 }
 
-/* The Void Container for Thoughts (The inner depth) */
+/* The Void Container for Thoughts */
 #terminal-housing {
   flex: 1;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border: 1px solid rgba(255, 191, 0, 0.1);
-  border-radius: 20px 30px 25px 40px / 30px 20px 40px 25px;
-  box-shadow: inset 0 20px 40px rgba(0,0,0,0.9);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 25px;
+  border: 1px solid rgba(255, 191, 0, 0.15);
+  border-radius: 25px 40px 30px 50px / 40px 25px 50px 30px;
+  box-shadow: inset 0 25px 50px rgba(0,0,0,0.95);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -158,68 +171,65 @@ header {
   font-size: 1.15rem;
   padding: 10px;
   overflow-y: auto;
-  text-shadow: 0 0 6px rgba(204, 153, 0, 0.4);
+  text-shadow: 0 0 8px rgba(204, 153, 0, 0.3);
 }
-#terminal::-webkit-scrollbar { width: 6px; }
+#terminal::-webkit-scrollbar { width: 4px; }
 #terminal::-webkit-scrollbar-track { background: transparent; }
-#terminal::-webkit-scrollbar-thumb { background: rgba(255,191,0,0.3); border-radius: 10px; }
+#terminal::-webkit-scrollbar-thumb { background: rgba(255,191,0,0.2); border-radius: 10px; }
 
-.line { margin-bottom: 10px; line-height: 1.6; word-wrap: break-word; }
-.line.system { color: #8c7335; font-style: italic; border-left: 2px solid var(--amber-dark); padding-left: 10px; opacity: 0.8;}
-.line.gold { color: var(--amber-bright); text-decoration: none; border-bottom: 1px dashed rgba(255, 191, 0, 0.4); margin-top: 20px; padding-bottom: 5px; text-transform: uppercase; font-family: var(--font-mind); font-size: 1.3rem; letter-spacing: 2px; text-shadow: 0 0 10px var(--amber-bright);}
-.line.user { color: var(--thought-text); text-shadow: 0 0 8px rgba(253, 245, 230, 0.6); }
-.line.error { color: var(--synapse-red); text-shadow: 0 0 10px var(--synapse-red); }
-.timestamp { color: var(--amber-dark); font-size: 0.85em; margin-right: 8px;}
+.line { margin-bottom: 12px; line-height: 1.7; word-wrap: break-word; }
+.line.system { color: #997a3d; font-style: italic; border-left: 2px solid var(--amber-dark); padding-left: 12px; opacity: 0.8;}
+.line.gold { color: var(--amber-bright); text-decoration: none; border-bottom: 1px dashed rgba(255, 191, 0, 0.3); margin-top: 25px; padding-bottom: 5px; text-transform: uppercase; font-family: var(--font-mind); font-size: 1.3rem; letter-spacing: 2px; text-shadow: 0 0 12px var(--amber-bright);}
+.line.user { color: var(--thought-text); text-shadow: 0 0 10px rgba(253, 245, 230, 0.5); }
+.line.error { color: var(--synapse-red); text-shadow: 0 0 12px var(--synapse-red); }
+.timestamp { color: var(--amber-dark); font-size: 0.85em; margin-right: 10px;}
 
-/* Projection Input Area (The Ripple) */
+/* Projection Input Area */
 .input-line { 
   display: flex; 
   align-items: center; 
-  background: rgba(10, 5, 0, 0.6); 
-  border: 1px solid var(--amber-meniscus); 
-  border-radius: 40px; 
-  padding: 15px 25px; 
+  background: rgba(10, 5, 0, 0.7); 
+  border: 1px solid rgba(255, 191, 0, 0.3); 
+  border-radius: 50px; 
+  padding: 18px 30px; 
   margin-top: 20px; 
-  box-shadow: inset 0 0 15px rgba(255, 191, 0, 0.1); 
+  box-shadow: inset 0 0 20px rgba(255, 191, 0, 0.1); 
 }
-.prompt { font-weight: bold; color: var(--amber-bright); margin-right: 12px; font-family: var(--font-echo); font-size: 1.2rem; text-shadow: 0 0 10px var(--amber-bright);}
+.prompt { font-weight: bold; color: var(--amber-bright); margin-right: 15px; font-family: var(--font-echo); font-size: 1.2rem; text-shadow: 0 0 10px var(--amber-bright);}
 
 input#cli {
   flex: 1; background: transparent; border: none; color: var(--thought-text);
   font-family: var(--font-echo); font-size: 1.2rem; outline: none; text-transform: uppercase;
-  text-shadow: 0 0 8px rgba(253, 245, 230, 0.5);
+  text-shadow: 0 0 8px rgba(253, 245, 230, 0.4);
 }
 input#cli::placeholder { color: var(--amber-dark); }
 
-/* --- Synaptic Thread Box (The Secondary Puddle) --- */
+/* --- Synaptic Thread Box (Secondary Puddle) --- */
 #chat-wrapper {
   flex: 1;
-  background: linear-gradient(135deg, rgba(30, 20, 0, 0.6) 0%, rgba(10, 7, 0, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(40, 25, 0, 0.5) 0%, rgba(10, 5, 0, 0.7) 100%);
   border: 2px solid var(--amber-meniscus);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
-  padding: 25px;
+  padding: 30px;
   
-  /* ADDED: float-container in reverse so it bobs opposite to the main terminal */
-  animation: puddle-morph 10s ease-in-out infinite reverse, 
-             liquid-pulse 5s ease-in-out infinite alternate,
-             float-container 11s ease-in-out infinite reverse;
+  animation: puddle-morph 12s ease-in-out infinite reverse, 
+             liquid-pulse 7s ease-in-out infinite alternate,
+             float-container 18s ease-in-out infinite reverse;
 }
 
-#chat-wrapper header { border-bottom: 1px solid rgba(255, 191, 0, 0.2); margin-bottom: 15px; padding-bottom: 10px; align-items: center; display: flex; justify-content: space-between;}
-#chat-wrapper header h3 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.6rem; letter-spacing: 2px; text-shadow: 0 0 12px var(--amber-bright);}
+#chat-wrapper header { border-bottom: 1px solid rgba(255, 191, 0, 0.15); margin-bottom: 20px; padding-bottom: 15px; align-items: center; display: flex; justify-content: space-between;}
+#chat-wrapper header h3 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.6rem; letter-spacing: 3px; }
 
-/* Ethereal glowing indicator */
 .status-indicator {
-  width: 14px; height: 14px;
+  width: 12px; height: 12px;
   background: var(--amber-bright);
   border-radius: 50%;
-  box-shadow: 0 0 15px var(--amber-bright), 0 0 5px var(--thought-text);
-  animation: bubble-rise 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px var(--amber-bright), 0 0 8px var(--time-ghost);
+  animation: float-container 3s ease-in-out infinite alternate;
 }
 
-/* Ticker tape for thoughts */
 #chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -232,82 +242,82 @@ input#cli::placeholder { color: var(--amber-dark); }
   color: var(--amber-dim);
 }
 
-.chat-msg { margin-bottom: 15px; background: rgba(255, 191, 0, 0.05); border-radius: 15px 15px 15px 0; padding: 10px 15px; border-left: 2px solid var(--amber-dim); box-shadow: inset 0 0 10px rgba(0,0,0,0.5);}
-.chat-msg .user { color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.1rem; letter-spacing: 1px;}
+.chat-msg { margin-bottom: 18px; background: rgba(255, 191, 0, 0.04); border-radius: 20px 20px 20px 0; padding: 12px 18px; border-left: 2px solid var(--amber-dim); box-shadow: inset 0 0 15px rgba(0,0,0,0.6);}
+.chat-msg .user { color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.1rem; letter-spacing: 2px;}
 .chat-msg .text { color: var(--thought-text); }
 
-.chat-input-area { display: flex; background: rgba(0,0,0,0.4); border: 1px solid var(--amber-dark); border-radius: 30px; padding: 12px 20px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);}
+.chat-input-area { display: flex; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,191,0,0.3); border-radius: 40px; padding: 15px 25px; box-shadow: inset 0 0 15px rgba(0,0,0,0.8);}
 #chat-input {
   width: 100%; background: transparent; border: none; color: var(--thought-text);
   font-family: var(--font-echo); outline: none; text-transform: uppercase; font-size: 1.1rem;
 }
 
-/* --- The Sliding Mental Tray (The Side Pool) --- */
+/* --- The Sliding Mental Tray --- */
 #side-tray {
   position: fixed;
-  top: 0; right: -400px; 
+  top: 0; right: -420px; 
   width: var(--tray-width);
   height: 100vh;
-  background: linear-gradient(to right, rgba(15, 10, 0, 0.9), rgba(5, 3, 0, 0.98));
+  background: linear-gradient(to left, rgba(5, 3, 0, 0.98), rgba(20, 12, 0, 0.9));
   border-left: 2px solid var(--amber-meniscus);
   z-index: 100;
-  padding: 30px;
-  box-shadow: -15px 0 50px rgba(255, 191, 0, 0.15);
-  backdrop-filter: blur(20px);
-  transition: right 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 35px;
+  box-shadow: -20px 0 60px rgba(255, 191, 0, 0.1);
+  backdrop-filter: blur(25px);
+  transition: right 0.7s cubic-bezier(0.3, 1, 0.2, 1); /* Slower, more ethereal slide */
   display: flex;
   flex-direction: column;
 }
 
 #side-tray.open { right: 0; }
 
-.tray-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255, 191, 0, 0.2); padding-bottom: 15px;}
-.tray-header h3 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.6rem; letter-spacing: 2px; text-shadow: 0 0 12px var(--amber-bright);}
-#tray-close { background: transparent; border: 1px solid var(--synapse-red); color: var(--synapse-red); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: var(--font-echo); transition: all 0.3s; box-shadow: inset 0 0 10px rgba(255, 77, 77, 0.2);}
-#tray-close:hover { background: rgba(255, 77, 77, 0.2); box-shadow: 0 0 15px rgba(255, 77, 77, 0.5), inset 0 0 15px rgba(255, 77, 77, 0.4); text-shadow: 0 0 5px var(--thought-text);}
+.tray-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; border-bottom: 1px solid rgba(255, 191, 0, 0.15); padding-bottom: 15px;}
+.tray-header h3 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.6rem; letter-spacing: 3px; }
+#tray-close { background: transparent; border: 1px solid var(--synapse-red); color: var(--synapse-red); border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: var(--font-echo); transition: all 0.3s; box-shadow: inset 0 0 12px rgba(255, 77, 77, 0.15);}
+#tray-close:hover { background: rgba(255, 77, 77, 0.15); box-shadow: 0 0 20px rgba(255, 77, 77, 0.4), inset 0 0 20px rgba(255, 77, 77, 0.3); text-shadow: 0 0 8px var(--thought-text); transform: rotate(90deg);}
 
-.tool-section h4 { margin: 0 0 15px 0; color: var(--amber-dim); font-family: var(--font-mind); font-size: 1.2rem; letter-spacing: 2px; text-align: center;}
-.divider { border: 0; border-top: 1px solid var(--amber-dark); margin: 30px 0; opacity: 0.5; box-shadow: 0 2px 5px var(--amber-bright); }
+.tool-section h4 { margin: 0 0 18px 0; color: var(--amber-dim); font-family: var(--font-mind); font-size: 1.2rem; letter-spacing: 3px; text-align: center;}
+.divider { border: 0; border-top: 1px solid rgba(255,191,0,0.2); margin: 35px 0; box-shadow: 0 2px 8px rgba(255,191,0,0.3); }
 
-/* Ethereal Glowing Tools (The Floating Bubbles) */
-#dice-display { background: rgba(0,0,0,0.6); color: var(--thought-text); border: 1px solid var(--amber-meniscus); border-radius: 30px; font-size: 1.4rem; font-family: var(--font-mind); text-align: center; padding: 15px; margin-bottom: 20px; box-shadow: inset 0 0 20px rgba(255,191,0,0.1);}
-.dice-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+/* Floating Conceptual Tools */
+#dice-display { background: rgba(0,0,0,0.5); color: var(--thought-text); border: 1px solid rgba(255,191,0,0.3); border-radius: 40px; font-size: 1.4rem; font-family: var(--font-mind); text-align: center; padding: 18px; margin-bottom: 25px; box-shadow: inset 0 0 25px rgba(255,191,0,0.15);}
+.dice-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .dice-grid button { 
-  background: rgba(255, 191, 0, 0.05); color: var(--amber-bright); border: 1px solid var(--amber-dark); 
-  border-radius: 50%; aspect-ratio: 1; /* Makes them perfect circles */
+  background: rgba(255, 191, 0, 0.03); color: var(--amber-bright); border: 1px solid rgba(255,191,0,0.4); 
+  border-radius: 50%; aspect-ratio: 1; 
   font-family: var(--font-echo); font-size: 1rem; cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: inset 0 0 10px rgba(255,191,0,0.1);
-  /* ADDED: A tiny float for the bubbles */
-  animation: float-container 8s ease-in-out infinite alternate;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 0 12px rgba(255,191,0,0.1);
+  animation: float-container 6s ease-in-out infinite alternate;
 }
-.dice-grid button:nth-child(even) { animation-delay: -2s; animation-direction: alternate-reverse; }
+.dice-grid button:nth-child(even) { animation-delay: -1.5s; animation-direction: alternate-reverse; }
+.dice-grid button:nth-child(3n) { animation-duration: 8s; } /* Chaotic floating timing */
 
 .dice-grid button:hover { 
   background: rgba(255, 191, 0, 0.2); border-color: var(--amber-bright); 
-  box-shadow: 0 0 20px rgba(255, 191, 0, 0.4), inset 0 0 15px rgba(255, 191, 0, 0.3); 
-  text-shadow: 0 0 8px var(--thought-text);
-  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(255, 191, 0, 0.5), inset 0 0 20px rgba(255, 191, 0, 0.3); 
+  text-shadow: 0 0 10px var(--thought-text);
+  transform: scale(1.1) translateY(-5px);
 }
 
-#calc-screen { font-size: 2rem; text-align: right; margin-bottom: 20px; background: rgba(0,0,0,0.6); border-radius: 20px; padding: 15px; color: var(--thought-text); border: 1px solid var(--amber-meniscus); font-family: var(--font-echo); box-shadow: inset 0 0 20px rgba(255,191,0,0.1);}
-.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+#calc-screen { font-size: 2rem; text-align: right; margin-bottom: 25px; background: rgba(0,0,0,0.5); border-radius: 30px; padding: 18px; color: var(--thought-text); border: 1px solid rgba(255,191,0,0.3); font-family: var(--font-echo); box-shadow: inset 0 0 25px rgba(255,191,0,0.15);}
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .calc-grid button { 
-  padding: 15px; font-size: 1.3rem; font-family: var(--font-echo); cursor: pointer; 
-  border-radius: 20px 10px 20px 10px; /* Slight wavy shape */
-  background: rgba(255,191,0,0.02); border: 1px solid var(--amber-dark); color: var(--amber-dim); 
-  transition: all 0.3s ease;
+  padding: 16px; font-size: 1.3rem; font-family: var(--font-echo); cursor: pointer; 
+  border-radius: 25px 15px 25px 15px; 
+  background: rgba(255,191,0,0.02); border: 1px solid rgba(255,191,0,0.3); color: var(--amber-dim); 
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .calc-grid button:hover { 
-  background: rgba(255, 191, 0, 0.1); border-color: var(--amber-bright); color: var(--amber-bright); 
-  box-shadow: 0 0 15px rgba(255, 191, 0, 0.3);
-  border-radius: 10px 20px 10px 20px; /* Morph on hover */
+  background: rgba(255, 191, 0, 0.15); border-color: var(--amber-bright); color: var(--amber-bright); 
+  box-shadow: 0 0 20px rgba(255, 191, 0, 0.3);
+  border-radius: 15px 25px 15px 25px; 
 }
-.calc-grid .op { color: var(--thought-text); background: rgba(255,191,0,0.08); }
+.calc-grid .op { color: var(--thought-text); background: rgba(255,191,0,0.06); }
 .calc-grid .clear { color: var(--synapse-red); border-color: rgba(255, 77, 77, 0.3); border-radius: 50%;}
-.calc-grid .clear:hover { background: rgba(255, 77, 77, 0.15); box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);}
-.calc-grid .equal { background: rgba(255, 191, 0, 0.15); color: var(--amber-bright); border-color: var(--amber-bright); border-radius: 30px;}
-.calc-grid .equal:hover { background: rgba(255, 191, 0, 0.3); box-shadow: 0 0 25px rgba(255, 191, 0, 0.5); text-shadow: 0 0 10px var(--thought-text);}
+.calc-grid .clear:hover { background: rgba(255, 77, 77, 0.2); box-shadow: 0 0 20px rgba(255, 77, 77, 0.5);}
+.calc-grid .equal { background: rgba(255, 191, 0, 0.15); color: var(--amber-bright); border-color: var(--amber-bright); border-radius: 40px;}
+.calc-grid .equal:hover { background: rgba(255, 191, 0, 0.3); box-shadow: 0 0 30px rgba(255, 191, 0, 0.6); text-shadow: 0 0 12px var(--thought-text);}
 
 /* --- Mobile --- */
 @media (max-width: 900px) {
