@@ -1,103 +1,273 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>SUBCONSCIOUS // AKASHIC ECHO</title>
+/* --- Materials & Palette: The Amber Void --- */
+:root {
+  --void-core: #050300;
+  --void-edge: #1a1100;
+  --amber-bright: #ffbf00;
+  --amber-dim: #cc9900;
+  --amber-dark: #4d3a00;
+  --amber-glow: rgba(255, 191, 0, 0.4);
+  --thought-text: #fdf5e6;
+  --synapse-red: #d93829;
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="O.U.T.I.S_CSS/O.U.T.I.S.css"/>
-</head>
-<body>
-  
-  <div id="grime-overlay"></div>
+  --font-mind: 'Cinzel', serif; 
+  --font-echo: 'Space Mono', monospace; 
+  --tray-width: 340px;
+}
 
-  <div id="main-interface">
-    <div id="terminal-wrapper">
-      <header>
-        <div class="brand">
-          <h2>THE COLLECTIVE</h2>
-          <small>LIBRARY OF BABEL // MENTAL PROJECTION</small>
-        </div>
-        <div id="system-clock">--:--:-- ECHO</div>
-        <button id="tools-toggle">[ MANIFEST CONSTRUCTS ]</button>
-      </header>
-      
-      <div id="terminal-housing">
-        <div id="terminal">
-          <div class="line system">Tapping into synaptic pathways... Rendering thoughts...</div>
-        </div>
-      </div>
-      
-      <div class="input-line">
-        <span class="prompt">INTENT_></span>
-        <input id="cli" type="text" autocomplete="off" placeholder="PROJECT THOUGHTS..." autofocus />
-      </div>
-    </div>
+body {
+  margin: 0;
+  background: radial-gradient(circle at center, var(--void-edge) 0%, var(--void-core) 100%);
+  color: var(--thought-text);
+  font-family: var(--font-echo);
+  font-size: 18px;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    <div id="chat-wrapper">
-      <header>
-        <h3>SYNAPTIC THREADS</h3>
-        <span class="status-indicator"></span>
-      </header>
-      <div id="chat-messages"></div>
-      <div class="chat-input-area">
-        <input id="chat-input" type="text" placeholder="WEAVE INTO THE COLLECTIVE..." autocomplete="off" />
-      </div>
-    </div>
-  </div>
+/* --- Ethereal Atmosphere --- */
+#grime-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle, transparent 20%, rgba(5, 3, 0, 0.8) 100%);
+  box-shadow: inset 0 0 100px rgba(255, 191, 0, 0.05);
+  pointer-events: none;
+  z-index: 50;
+}
 
-  <aside id="side-tray">
-    <div class="tray-header">
-      <h3>MENTAL CONSTRUCTS</h3>
-      <button id="tray-close">X</button>
-    </div>
+/* --- MAIN LAYOUT --- */
+#main-interface {
+  display: flex;
+  width: 96vw;
+  max-width: 1500px;
+  height: 88vh;
+  gap: 25px;
+  z-index: 10;
+  position: relative;
+}
 
-    <div class="tool-section">
-      <h4>PROBABILITY MATRICES</h4>
-      <div id="dice-display">FATE: --</div>
-      <div class="dice-grid">
-        <button onclick="roll(4)">D4</button>
-        <button onclick="roll(6)">D6</button>
-        <button onclick="roll(8)">D8</button>
-        <button onclick="roll(10)">D10</button>
-        <button onclick="roll(12)">D12</button>
-        <button onclick="roll(20)">D20</button>
-        <button onclick="roll(100)">D100</button>
-      </div>
-    </div>
+/* --- The Main Mind-Space Window --- */
+#terminal-wrapper {
+  flex: 2.5;
+  background: rgba(10, 7, 0, 0.5);
+  border: 1px solid var(--amber-dark);
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(255, 191, 0, 0.05), inset 0 0 40px rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  position: relative;
+}
 
-    <hr class="divider">
+/* Ethereal Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--amber-dark);
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  background: transparent;
+  padding: 15px 0;
+}
 
-    <div class="tool-section">
-      <h4>LOGIC RESONANCE</h4>
-      <div id="calc-screen">0</div>
-      <div class="calc-grid">
-        <button onclick="calc('7')">7</button>
-        <button onclick="calc('8')">8</button>
-        <button onclick="calc('9')">9</button>
-        <button class="op" onclick="calc('/')">÷</button>
-        <button onclick="calc('4')">4</button>
-        <button onclick="calc('5')">5</button>
-        <button onclick="calc('6')">6</button>
-        <button class="op" onclick="calc('*')">×</button>
-        <button onclick="calc('1')">1</button>
-        <button onclick="calc('2')">2</button>
-        <button onclick="calc('3')">3</button>
-        <button class="op" onclick="calc('-')">-</button>
-        <button class="clear" onclick="calc('C')">C</button>
-        <button onclick="calc('0')">0</button>
-        <button class="equal" onclick="calc('=')">=</button>
-        <button class="op" onclick="calc('+')">+</button>
-      </div>
-    </div>
-  </aside>
+.brand h2 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 3rem; letter-spacing: 4px; line-height: 1; text-transform: uppercase; text-shadow: 0 0 15px var(--amber-glow); }
+.brand small { font-size: 0.9rem; color: var(--amber-dim); letter-spacing: 3px; font-family: var(--font-echo); opacity: 0.8; }
 
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-  <script src="O.U.T.I.S_Code/O.U.T.I.S.js"></script>
-  <script src="O.U.T.I.S_Code/O.U.T.I.S_Side.js"></script>
-</body>
-</html>
+#system-clock {
+  color: var(--amber-bright);
+  font-family: var(--font-echo);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px var(--amber-glow);
+}
+
+/* Glowing Construct Button */
+#tools-toggle {
+  background: transparent;
+  color: var(--amber-bright);
+  border: 1px solid var(--amber-dim);
+  border-radius: 4px;
+  font-family: var(--font-mind);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  box-shadow: 0 0 15px rgba(255, 191, 0, 0.1), inset 0 0 10px rgba(255, 191, 0, 0.1);
+  transition: all 0.2s ease;
+}
+#tools-toggle:hover {
+  background: rgba(255, 191, 0, 0.1);
+  box-shadow: 0 0 20px rgba(255, 191, 0, 0.3), inset 0 0 15px rgba(255, 191, 0, 0.2);
+  text-shadow: 0 0 8px var(--amber-bright);
+}
+#tools-toggle:active {
+  transform: scale(0.98);
+}
+
+/* The Void Container for Thoughts */
+#terminal-housing {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px;
+  border: 1px solid rgba(255, 191, 0, 0.1);
+  border-radius: 6px;
+  box-shadow: inset 0 10px 30px rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* The Subconscious Feed */
+#terminal {
+  flex: 1;
+  background: transparent;
+  color: var(--amber-dim);
+  font-size: 1.15rem;
+  padding: 15px;
+  overflow-y: auto;
+  text-shadow: 0 0 4px rgba(204, 153, 0, 0.3);
+}
+#terminal::-webkit-scrollbar { width: 8px; }
+#terminal::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+#terminal::-webkit-scrollbar-thumb { background: var(--amber-dark); border-radius: 4px; }
+
+.line { margin-bottom: 8px; line-height: 1.6; word-wrap: break-word; }
+.line.system { color: #8c7335; font-style: italic; border-left: 2px solid var(--amber-dark); padding-left: 10px; }
+.line.gold { color: var(--amber-bright); text-decoration: none; border-bottom: 1px solid var(--amber-dim); margin-top: 15px; text-transform: uppercase; font-family: var(--font-mind); font-size: 1.3rem; letter-spacing: 1px; text-shadow: 0 0 8px var(--amber-glow);}
+.line.user { color: var(--thought-text); text-shadow: 0 0 5px rgba(253, 245, 230, 0.4); }
+.line.error { color: var(--synapse-red); text-shadow: 0 0 8px rgba(217, 56, 41, 0.5); }
+.timestamp { color: var(--amber-dark); font-size: 0.85em; margin-right: 8px;}
+
+/* Projection Input Area */
+.input-line { display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--amber-dark); border-radius: 4px; padding: 15px; margin-top: 15px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }
+.prompt { font-weight: bold; color: var(--amber-bright); margin-right: 12px; font-family: var(--font-echo); font-size: 1.2rem; text-shadow: 0 0 8px var(--amber-glow);}
+
+input#cli {
+  flex: 1; background: transparent; border: none; color: var(--thought-text);
+  font-family: var(--font-echo); font-size: 1.2rem; outline: none; text-transform: uppercase;
+  text-shadow: 0 0 5px rgba(253, 245, 230, 0.3);
+}
+input#cli::placeholder { color: var(--amber-dark); }
+
+/* --- Synaptic Thread Box (Chat) --- */
+#chat-wrapper {
+  flex: 1;
+  background: rgba(10, 7, 0, 0.5);
+  border: 1px solid var(--amber-dark);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(255, 191, 0, 0.05), inset 0 0 20px rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+}
+
+#chat-wrapper header { border-bottom: 1px solid var(--amber-dark); margin-bottom: 15px; padding-bottom: 10px; align-items: center; display: flex; justify-content: space-between;}
+#chat-wrapper header h3 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.6rem; letter-spacing: 2px; text-shadow: 0 0 10px var(--amber-glow);}
+
+/* Ethereal glowing indicator */
+.status-indicator {
+  width: 12px; height: 12px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--amber-bright), 0 0 5px var(--thought-text);
+  animation: pulse 3s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; box-shadow: 0 0 10px var(--amber-bright); }
+  100% { opacity: 1; box-shadow: 0 0 25px var(--amber-bright), 0 0 10px var(--thought-text); }
+}
+
+/* Ticker tape for thoughts */
+#chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column-reverse; 
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 191, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  color: var(--amber-dim);
+  box-shadow: inset 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.chat-msg { margin-bottom: 12px; border-left: 2px solid var(--amber-dim); padding-left: 10px; text-shadow: 0 0 4px rgba(204, 153, 0, 0.2);}
+.chat-msg .user { color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.1rem; letter-spacing: 1px;}
+.chat-msg .text { color: var(--thought-text); }
+
+.chat-input-area { display: flex; background: rgba(0,0,0,0.3); border: 1px solid var(--amber-dark); border-radius: 4px; padding: 12px;}
+#chat-input {
+  width: 100%; background: transparent; border: none; color: var(--thought-text);
+  font-family: var(--font-echo); outline: none; text-transform: uppercase; font-size: 1.1rem;
+}
+#chat-input::placeholder { color: var(--amber-dark); }
+
+/* --- The Sliding Mental Tray --- */
+#side-tray {
+  position: fixed;
+  top: 0; right: -380px; 
+  width: var(--tray-width);
+  height: 100vh;
+  background: rgba(5, 3, 0, 0.95);
+  border-left: 1px solid var(--amber-dim);
+  z-index: 100;
+  padding: 30px;
+  box-shadow: -10px 0 40px rgba(255, 191, 0, 0.1);
+  backdrop-filter: blur(15px);
+  transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+#side-tray.open { right: 0; }
+
+.tray-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--amber-dark); padding-bottom: 15px;}
+.tray-header h3 { margin: 0; color: var(--amber-bright); font-family: var(--font-mind); font-size: 1.6rem; letter-spacing: 2px; text-shadow: 0 0 10px var(--amber-glow);}
+#tray-close { background: transparent; border: 1px solid var(--synapse-red); color: var(--synapse-red); border-radius: 4px; font-size: 1.2rem; cursor: pointer; font-family: var(--font-echo); padding: 5px 15px; transition: all 0.2s; }
+#tray-close:hover { background: rgba(217, 56, 41, 0.2); box-shadow: 0 0 10px rgba(217, 56, 41, 0.4); text-shadow: 0 0 5px var(--synapse-red);}
+#tray-close:active { transform: scale(0.95); }
+
+.tool-section h4 { margin: 0 0 15px 0; color: var(--amber-dim); font-family: var(--font-mind); font-size: 1.2rem; letter-spacing: 2px;}
+.divider { border: 0; border-top: 1px solid var(--amber-dark); margin: 30px 0; opacity: 0.5; }
+
+/* Ethereal Glowing Tools */
+#dice-display { background: rgba(0,0,0,0.5); color: var(--thought-text); border: 1px solid var(--amber-dark); border-radius: 4px; font-size: 1.4rem; font-family: var(--font-mind); text-align: center; padding: 15px; margin-bottom: 20px; text-shadow: 0 0 5px rgba(253, 245, 230, 0.5);}
+.dice-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.dice-grid button { 
+  background: transparent; color: var(--amber-bright); border: 1px solid var(--amber-dark); border-radius: 4px;
+  padding: 12px; font-family: var(--font-echo); font-size: 1.1rem; cursor: pointer;
+  transition: all 0.2s ease;
+}
+.dice-grid button:hover { background: rgba(255, 191, 0, 0.1); border-color: var(--amber-dim); box-shadow: 0 0 15px rgba(255, 191, 0, 0.2); text-shadow: 0 0 8px var(--amber-bright);}
+.dice-grid button:active { transform: scale(0.95); }
+
+#calc-screen { font-size: 2rem; text-align: right; margin-bottom: 20px; background: rgba(0,0,0,0.5); border-radius: 4px; padding: 15px; color: var(--thought-text); border: 1px solid var(--amber-dark); font-family: var(--font-echo); text-shadow: 0 0 8px rgba(253, 245, 230, 0.5);}
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.calc-grid button { 
+  padding: 18px; font-size: 1.3rem; font-family: var(--font-echo); cursor: pointer; border-radius: 4px;
+  background: transparent; border: 1px solid var(--amber-dark); color: var(--amber-dim); 
+  transition: all 0.2s ease;
+}
+.calc-grid button:hover { background: rgba(204, 153, 0, 0.1); border-color: var(--amber-dim); color: var(--amber-bright); box-shadow: 0 0 15px rgba(204, 153, 0, 0.2);}
+.calc-grid button:active { transform: scale(0.95); }
+.calc-grid .op { color: var(--thought-text); border-color: var(--amber-dim); }
+.calc-grid .clear { color: var(--synapse-red); border-color: rgba(217, 56, 41, 0.5); }
+.calc-grid .clear:hover { background: rgba(217, 56, 41, 0.1); border-color: var(--synapse-red); box-shadow: 0 0 15px rgba(217, 56, 41, 0.3);}
+.calc-grid .equal { background: rgba(255, 191, 0, 0.1); color: var(--amber-bright); border-color: var(--amber-bright); }
+.calc-grid .equal:hover { background: rgba(255, 191, 0, 0.2); box-shadow: 0 0 20px rgba(255, 191, 0, 0.4); text-shadow: 0 0 8px var(--amber-bright);}
+
+/* --- Mobile --- */
+@media (max-width: 900px) {
+  #main-interface { flex-direction: column; height: 98vh; overflow-y: auto; }
+  #terminal-wrapper { flex: none; height: 60vh; }
+  #chat-wrapper { flex: none; height: 40vh; }
+}
