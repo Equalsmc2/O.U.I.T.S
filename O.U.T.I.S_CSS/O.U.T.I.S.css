@@ -356,8 +356,8 @@ body::after {
     circle at center,
     transparent 0%,
     transparent 4%,
-    rgba(255, 191, 0, 0.12) 6%, /* Increased opacity and thickness */
-    rgba(255, 191, 0, 0.04) 8%,
+    rgba(0, 0, 255,)
+    rgba(0, 0, 255,)
   );
   pointer-events: none;
   z-index: 15; /* Raised above the containers' z-index of 10 */
