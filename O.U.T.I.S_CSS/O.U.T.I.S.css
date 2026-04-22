@@ -355,13 +355,13 @@ body::after {
   background: repeating-radial-gradient(
     circle at center,
     transparent 0%,
-    transparent 3%,
-    rgba(255, 191, 0, 0.03) 4%, /* Amber tint */
-    rgba(255, 191, 0, 0.01) 5%,
-    transparent 6%
+    transparent 4%,
+    rgba(255, 191, 0, 0.12) 6%, /* Increased opacity and thickness */
+    rgba(255, 191, 0, 0.04) 8%,
+    transparent 10%
   );
   pointer-events: none;
-  z-index: 5; /* Places it behind the main interface but visible */
+  z-index: 15; /* Raised above the containers' z-index of 10 */
   transform: translate(-50%, -50%);
 }
 
