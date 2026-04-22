@@ -358,7 +358,6 @@ body::after {
     transparent 4%,
     rgba(255, 191, 0, 0.12) 6%, /* Increased opacity and thickness */
     rgba(255, 191, 0, 0.04) 8%,
-    transparent 10%
   );
   pointer-events: none;
   z-index: 15; /* Raised above the containers' z-index of 10 */
