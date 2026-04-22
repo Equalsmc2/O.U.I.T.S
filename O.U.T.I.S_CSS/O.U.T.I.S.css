@@ -333,11 +333,11 @@ input#cli::placeholder { color: var(--amber-dark); }
   100% { transform: scale(2.5); opacity: 0; } /* Dissipates outward */
 }
 
-/* Attaching the ripples to the body and sending them behind the UI */
+/* Attaching the ripples and placing them between the background and UI */
 body::before,
 body::after {
   content: "";
-  position: absolute;
+  position: fixed; /* Changed to fixed to ensure it always covers the screen */
   top: -50%; 
   left: -50%; 
   width: 200%; 
@@ -350,11 +350,15 @@ body::after {
     transparent 200px
   );
   animation: deep-ripple 24s linear infinite;
-  z-index: -1; /* This keeps it strictly in the background */
+  
+  /* THE FIX: Changed from -1 to 1. 
+     Now sits above the body background but behind your z-index: 10 interface */
+  z-index: 1; 
+  
   pointer-events: none;
 }
 
-/* Staggering the second wave so the chronal ripples never stop */
+/* Staggering the second wave */
 body::after {
   animation-delay: -12s; 
 }
