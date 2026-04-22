@@ -353,7 +353,7 @@ body::after {
   
   /* THE FIX: Changed from -1 to 1. 
      Now sits above the body background but behind your z-index: 10 interface */
-  z-index: 1; 
+  z-index: 100; 
   
   pointer-events: none;
 }
