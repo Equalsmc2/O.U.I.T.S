@@ -325,3 +325,53 @@ input#cli::placeholder { color: var(--amber-dark); }
   #terminal-wrapper { flex: none; height: 60vh; }
   #chat-wrapper { flex: none; height: 40vh; margin-bottom: 20px;}
 }
+
+/* --- AMBER WATER RIPPLE EFFECT --- */
+@keyframes ripple-wave {
+  0% { 
+    transform: translate(-50%, -50%) scale(0.8); 
+    opacity: 0; 
+  }
+  20% { 
+    opacity: 0.8; 
+  }
+  80% { 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(2); 
+    opacity: 0; 
+  }
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200vw;
+  height: 200vw;
+  background: repeating-radial-gradient(
+    circle at center,
+    transparent 0%,
+    transparent 3%,
+    rgba(255, 191, 0, 0.03) 4%, /* Amber tint */
+    rgba(255, 191, 0, 0.01) 5%,
+    transparent 6%
+  );
+  pointer-events: none;
+  z-index: 5; /* Places it behind the main interface but visible */
+  transform: translate(-50%, -50%);
+}
+
+/* Primary Ripple */
+body::before {
+  animation: ripple-wave 16s linear infinite;
+}
+
+/* Secondary Ripple (Offset for a continuous flow) */
+body::after {
+  animation: ripple-wave 16s linear infinite;
+  animation-delay: 8s;
+}
