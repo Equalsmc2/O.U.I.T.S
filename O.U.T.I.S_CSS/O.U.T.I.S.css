@@ -325,3 +325,40 @@ input#cli::placeholder { color: var(--amber-dark); }
   #terminal-wrapper { flex: none; height: 60vh; }
   #chat-wrapper { flex: none; height: 40vh; margin-bottom: 20px;}
 }
+
+/* --- OUTWARD WAVE EFFECT (ADD TO BOTTOM) --- */
+@keyframes chronal-ripple {
+  0% { transform: scale(0.5); opacity: 0; }
+  20% { opacity: 0.4; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Appending the overflow rule to your existing overlay */
+#grime-overlay {
+  overflow: hidden; 
+}
+
+/* Attaching the expanding waves */
+#grime-overlay::before, 
+#grime-overlay::after {
+  content: "";
+  position: absolute;
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%;
+  background: repeating-radial-gradient(
+    circle at center,
+    transparent 0,
+    transparent 80px,
+    var(--amber-liquid) 100px,
+    transparent 140px
+  );
+  animation: chronal-ripple 18s linear infinite;
+  pointer-events: none;
+}
+
+/* Staggering the second wave for a continuous pulse */
+#grime-overlay::after {
+  animation-delay: -9s; 
+}
