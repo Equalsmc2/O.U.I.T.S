@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // O.U.T.I.S. Collective Subconscious Internal Engine Setup
+  // O.U.T.I.S. Internal Engine Setup
   const config = {
     apiKey: "AIzaSyDkOXN9YtYKiZsGbQ6gDdluJqHMMFfxfJw",
     authDomain: "outis-21ecf.firebaseapp.com",
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       second: '2-digit' 
     });
     const clockEl = document.getElementById("system-clock");
-    if(clockEl) clockEl.innerText = timeString + " ECHO"; 
+    if(clockEl) clockEl.innerText = timeString + " SYS"; 
   };
 
   setInterval(updateClock, 1000);
@@ -48,160 +48,168 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const loadData = async () => {
-    log("[SYSTEM] Synchronizing neural pathways... Anchoring to the Collective...", "system");
-    log("[SYSTEM] Establishing synaptic link to the Akashic Record...", "system");
+    log("[SYSTEM] Initializing system routines...", "system");
+    log("[SYSTEM] Fetching database records...", "system");
 
     try {
       const notesSnap = await db.collection("notes").orderBy("timestamp").get();
       cache.notes = notesSnap.docs.map(doc => doc.id);
       
-      log("<br><u>[IMPRINTED MEMORIES]:</u>", "gold");
-      if (notesSnap.empty) log(" [VOID] No thoughts anchored in this space.", "system");
+      log("<br><u>[SAVED NOTES]:</u>", "gold");
+      if (notesSnap.empty) log(" [NULL] No notes found.", "system");
       else notesSnap.docs.forEach((doc, i) => {
         const d = doc.data();
-        log(`<span class="timestamp">[${formatTime(d.timestamp)}]</span> RECOLLECTION_${i + 1}: ${d.text}`);
+        log(`<span class="timestamp">[${formatTime(d.timestamp)}]</span> NOTE_0${i + 1}: ${d.text}`);
       });
 
       const invSnap = await db.collection("inventory").orderBy("timestamp").get();
       cache.inventory = invSnap.docs.map(doc => doc.id);
       
-      log("<br><u>[MENTAL CONSTRUCTS]:</u>", "gold");
-      if (invSnap.empty) log(" [VOID] Subconscious inventory is empty.", "system");
+      log("<br><u>[INVENTORY]:</u>", "gold");
+      if (invSnap.empty) log(" [NULL] Inventory is empty.", "system");
       else invSnap.docs.forEach((doc, i) => {
-        log(` CONSTRUCT_${i + 1}: ${doc.data().text}`);
+        log(` ITEM_0${i + 1}: ${doc.data().text}`);
       });
 
-      log("<br>[CONNECTION: STABLE] Enter 'thoughts' for available intents.", "system");
+      log("<br>[STATUS: ONLINE] Type 'help' to view available commands.", "system");
     } catch (err) {
-      log(`[SYNAPTIC SEVERANCE] Link to the Collective failed: ${err.message}`, "error");
+      log(`[FATAL ERROR] Database connection failed: ${err.message}`, "error");
     }
   };
 
+  // 🛠️ NORMALIZED COMMANDS OBJECT
   const commands = {
-    thoughts: () => `
-    <span style="color:#ffbf00; font-weight:bold;">[AVAILABLE INTENTS]:</span>
-    imprint [text]    → Sear a thought into the Collective memory
-    memories          → Recall all imprinted thoughts
-    forget [#]        → Erase a specific memory
-    submerge [item]   → Hide a construct in the subconscious
-    project [#]       → Manifest a construct into reality
-    constructs        → View currently hidden constructs
-    perceive          → Sense external aura and conditions
-    echo              → Intercept distant psychic transmissions
-    willpower [+/-]   → Adjust your mental fortitude (currency)
-    architect         → View concepts available to manifest
-    conjure [item]    → Expend Willpower to manifest an item
-    void              → Clear your mental vision (clears screen)`,
+    commands: () => `
+    <span style="color:#ffbf00; font-weight:bold;">[ SYSTEM COMMANDS ]:</span>
+    write [text]    → Save a new note
+    read            → Read all saved notes
+    rm [#]          → Delete a note by number
+    store [item]    → Add an item to your inventory
+    take [#]        → Remove an item from inventory by number
+    inv             → Check your inventory
+    weather         → Check current weather conditions
+    radio           → Intercept radio signals
+    bank [+/- amt]  → Manage your coins
+    shop            → View available items in the shop
+    buy [item]      → Buy an item from the shop
+    clear           → Clear the terminal display
+    help            → Show this menu`,
 
-    // ALIAS FOR MUSCLE MEMORY
-    help: function() { return this.thoughts(); },
+    help: function() { return this.commands(); },
 
-    "lucid": () => `
-    <span style="color:#d93829; font-weight:bold;">[DREAMWALKER OVERRIDES]:</span>
-    lucid temp [text]      → Alter perceived reality/aura
-    lucid echo [text]      → Plant a psychic transmission
-    lucid supply [item;10] → Stock the Architect (use semicolon)`,
+    admin: () => `
+    <span style="color:#d93829; font-weight:bold;">[ ADMIN COMMANDS ]:</span>
+    admin weather [text]     → Alter weather conditions
+    admin radio [text]       → Update radio broadcast
+    admin stock [item;10]    → Upload items to shop (use semicolon for price)`,
 
-    imprint: async (t) => {
-      if (!t) return "Syntax Error: imprint [thought]";
+    write: async (t) => {
+      if (!t) return "Syntax Error: write [text]";
       await db.collection("notes").add({ text: t, timestamp: Date.now() });
-      return "[ANCHORED] Thought successfully woven into the Collective.";
+      return "[SUCCESS] Note saved.";
     },
-    memories: async () => {
+    read: async () => {
       const snap = await db.collection("notes").orderBy("timestamp").get();
       cache.notes = snap.docs.map(doc => doc.id);
-      if (snap.empty) return "The void holds no memories.";
+      if (snap.empty) return "[NULL] No notes exist.";
       return snap.docs.map((doc, i) => 
-        `<span class="timestamp">[${formatTime(doc.data().timestamp)}]</span> RECOLLECTION_${i+1}: ${doc.data().text}`
+        `<span class="timestamp">[${formatTime(doc.data().timestamp)}]</span> NOTE_0${i+1}: ${doc.data().text}`
       ).join("\n");
     },
-    forget: async (i) => {
+    rm: async (i) => {
       const idx = parseInt(i) - 1;
-      if (isNaN(idx) || !cache.notes[idx]) return "[FRACTURE] Invalid memory sequence.";
+      if (isNaN(idx) || !cache.notes[idx]) return "[ERROR] Invalid note number.";
       await db.collection("notes").doc(cache.notes[idx]).delete();
-      return `[DISSOLVED] RECOLLECTION_${idx + 1} fades into the void.`;
+      return `[EXECUTED] Note_0${idx + 1} deleted.`;
     },
-    submerge: async (item) => {
-      if (!item) return "Syntax Error: submerge [construct name]";
+    store: async (item) => {
+      if (!item) return "Syntax Error: store [item name]";
       await db.collection("inventory").add({ text: item, timestamp: Date.now() });
-      return `[SECURED] '${item}' submerged deep within the subconscious.`;
+      return `[SUCCESS] '${item}' added to inventory.`;
     },
-    constructs: async () => {
+    inv: async () => {
       const snap = await db.collection("inventory").orderBy("timestamp").get();
       cache.inventory = snap.docs.map(doc => doc.id);
-      if (snap.empty) return "There are no constructs currently submerged.";
-      return snap.docs.map((doc, i) => `CONSTRUCT_${i+1}: ${doc.data().text}`).join("\n");
+      if (snap.empty) return "[NULL] Inventory is empty.";
+      return snap.docs.map((doc, i) => `ITEM_0${i+1}: ${doc.data().text}`).join("\n");
     },
-    project: async (i) => {
+    take: async (i) => {
       const idx = parseInt(i) - 1;
-      if (isNaN(idx) || !cache.inventory[idx]) return "[FRACTURE] Cannot grasp that construct.";
+      if (isNaN(idx) || !cache.inventory[idx]) return "[ERROR] Invalid item number.";
       const docRef = await db.collection("inventory").doc(cache.inventory[idx]).get();
       const name = docRef.data().text;
       await db.collection("inventory").doc(cache.inventory[idx]).delete();
-      return `[MANIFESTED] '${name}' pulled from the depths into reality.`;
+      return `[EXECUTED] '${name}' removed from inventory.`;
     },
-    perceive: async () => {
+    weather: async () => {
       const doc = await db.collection("meta").doc("temperature").get();
-      return doc.exists ? `[AURA READING]: ${doc.data().text}` : "[BLINDNESS] Senses are clouded.";
+      return doc.exists ? `[WEATHER]: ${doc.data().text}` : "[ERROR] Sensors offline.";
     },
-    echo: async () => {
+    radio: async () => {
       const doc = await db.collection("meta").doc("broadcast").get();
-      return doc.exists ? `[DISTANT THOUGHT DETECTED]:\n${doc.data().text}` : "[SILENCE] The void is quiet.";
+      return doc.exists ? `[RADIO INTERCEPT]:\n${doc.data().text}` : "[SILENCE] No signals detected.";
     },
-    willpower: async (input) => {
+    bank: async (input) => {
       const goldRef = db.collection("meta").doc("gold");
       const doc = await goldRef.get();
       let current = doc.exists ? doc.data().amount : 0;
-      if (!input) return `[FOCUS]: You have ${current} Willpower remaining.`;
+      if (!input) return `[BANK]: ${current} Coins available.`;
+      
       const match = input.trim().match(/^([\+\-]?)(\d+)$/);
-      if (!match) return "Syntax Error: willpower +50 or willpower -20";
+      if (!match) return "Syntax Error: bank +50 or bank -20";
+      
       const sign = match[1];
       const val = parseInt(match[2]);
       if (sign === "+") current += val;
       else if (sign === "-") current -= val;
       else current = val;
+      
       await goldRef.set({ amount: current, timestamp: Date.now() });
-      return `[SHIFT] Focus updated. Current balance: ${current} Willpower.`;
+      return `[SUCCESS] Bank updated: ${current} Coins.`;
     },
-    architect: async () => {
+    shop: async () => {
       const snap = await db.collection("shop").orderBy("price").get();
-      if (snap.empty) return "[STAGNATION] The Architect has no blueprints available.";
+      if (snap.empty) return "[NULL] Shop is empty.";
       return snap.docs.map((doc, i) => 
-        `BLUEPRINT_${i+1}: ${doc.data().name} — <span style="color:#ffbf00;">${doc.data().price} Willpower</span>`
+        `ITEM_0${i+1}: ${doc.data().name} — <span style="color:#ffbf00;">${doc.data().price} Coins</span>`
       ).join("\n");
     },
-    conjure: async (itemName) => {
-      if (!itemName) return "Syntax Error: conjure [blueprint name]";
+    buy: async (itemName) => {
+      if (!itemName) return "Syntax Error: buy [item name]";
       const goldRef = db.collection("meta").doc("gold");
       const goldDoc = await goldRef.get();
       const currentGold = goldDoc.exists ? goldDoc.data().amount : 0;
+      
       const shopSnap = await db.collection("shop").where("name", "==", itemName).limit(1).get();
-      if (shopSnap.empty) return `[REJECTED] The Architect cannot envision '${itemName}'.`;
+      if (shopSnap.empty) return `[ERROR] Item '${itemName}' does not exist in the shop.`;
+      
       const itemDoc = shopSnap.docs[0];
       const { price, name } = itemDoc.data();
-      if (currentGold < price) return `[EXHAUSTION] Insufficient focus. Requires ${price} Willpower. You only have ${currentGold}.`;
+      
+      if (currentGold < price) return `[DENIED] Insufficient funds. Requires ${price} Coins. You have ${currentGold}.`;
+      
       await goldRef.set({ amount: currentGold - price, timestamp: Date.now() });
       await db.collection("inventory").add({ text: name, timestamp: Date.now() });
       await db.collection("shop").doc(itemDoc.id).delete();
-      return `[MATERIALIZED] Blueprint '${name}' successfully conjured.\nRemaining Focus: ${currentGold - price} Willpower.`;
+      return `[SUCCESS] Bought '${name}'.\nRemaining Balance: ${currentGold - price} Coins.`;
     },
-    "lucid temp": async (t) => {
-      if(!t) return "Syntax Error: lucid temp [text]";
+    "admin weather": async (t) => {
+      if(!t) return "Syntax Error: admin weather [text]";
       await db.collection("meta").doc("temperature").set({ text: t, timestamp: Date.now() });
-      return `[REALITY WARPED] External aura modified.`;
+      return `[ADMIN] Weather updated.`;
     },
-    "lucid echo": async (t) => {
-      if(!t) return "Syntax Error: lucid echo [text]";
+    "admin radio": async (t) => {
+      if(!t) return "Syntax Error: admin radio [text]";
       await db.collection("meta").doc("broadcast").set({ text: t, timestamp: Date.now() });
-      return `[RIPPLE] Psychic transmission planted in the void.`;
+      return `[ADMIN] Radio updated.`;
     },
-    "lucid supply": async (input) => {
+    "admin stock": async (input) => {
       const [name, price] = input.split(";");
-      if (!name || !price) return "Syntax Error: lucid supply [item name];[price]";
+      if (!name || !price) return "Syntax Error: admin stock [item name];[price]";
       await db.collection("shop").add({ name: name.trim(), price: parseInt(price), timestamp: Date.now() });
-      return `[INCEPTION] Planted concept '${name.trim()}' into the Architect for ${price} Willpower.`;
+      return `[ADMIN] '${name.trim()}' added to shop for ${price} Coins.`;
     },
-    void: () => {
+    clear: () => {
       terminal.innerHTML = "";
       return "";
     }
@@ -232,13 +240,13 @@ document.addEventListener("DOMContentLoaded", () => {
       cmdHistory.push(input);
       historyIndex = cmdHistory.length;
 
-      log(`[PROJECTED]> ${input}`, "user");
+      log(`[EXEC]> ${input}`, "user");
       cli.value = "";
 
       const [cmd, ...args] = input.split(" ");
-      const isDm = cmd.toLowerCase() === "lucid";
+      const isDm = cmd.toLowerCase() === "admin";
       
-      const commandKey = isDm ? (args[0] ? `lucid ${args[0]}` : "lucid") : cmd.toLowerCase();
+      const commandKey = isDm ? (args[0] ? `admin ${args[0].toLowerCase()}` : "admin") : cmd.toLowerCase();
       const commandArgs = isDm ? args.slice(1).join(" ") : args.join(" ");
 
       try {
@@ -246,10 +254,10 @@ document.addEventListener("DOMContentLoaded", () => {
           const result = await commands[commandKey](commandArgs);
           if (result) log(result);
         } else {
-          log(`[DISSONANCE] Unknown Intent: '${commandKey}'`, "error");
+          log(`[ERROR] Unknown command: '${commandKey}'. Type 'help' for a list of commands.`, "error");
         }
       } catch (err) {
-        log(`[PSYCHIC FEEDBACK] Matrix failure: ${err.message}`, "error");
+        log(`[CRITICAL ERROR] Logic exception: ${err.message}`, "error");
       }
     }
   });
@@ -290,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
             timestamp: Date.now()
           });
         } catch (err) {
-          console.error("Synapse failure:", err);
+          console.error("Chat sync failure:", err);
         }
       }
     });
